@@ -10,7 +10,7 @@ function App() {
               <li><Link to="/" id='title'>vTodo</Link></li>
             </ul>
             <ul className='topnav-items'>
-              <li><Link to="/">👩‍💻viktorsynek</Link></li>
+              <li><Link to="/">username</Link></li>
               <li><Link to="/">Logout</Link></li>
             </ul>
           </div>
