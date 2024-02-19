@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed&family=Fredoka+One&family=Open+Sans:wght@300&family=Roboto+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --background: #f8f9fc;
+  --foreground: #292929;
+  --second-color: #6466f8;
+
+  --first-font: 'Roboto Slab', sans-serif;
+  --second-font: 'Roboto Mono', monospace;
+  --third-font: 'Barlow Condensed', sans-serif;
+  --fourth-font: 'Fredoka One', sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--first-font);
+  font-size: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0c0c0c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1d1d1d;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
+}
+
+.topnav {
+  width: 100%;
+  height: 100px;
+  font-family: var(--second-font);
+  font-weight: 700;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+ul {
+  padding-left: 0;
+}
+
+.topnav-items li {
+  display: inline;
+  margin-right: 75px;
+  margin-left: 75px;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--main-color);
+  transition: all ease-in-out .5s;
+}
+
+a:hover{
+  color: var(--second-color);
+}
+
+#title {
+  font-size: 30px;
+}
+
+.box {
+  margin: 0 auto;
+  background-color: #edeef3;
+  border: 1px solid #edeef3;
+  border-radius: 5px;
+  width: 1250px;
+  height: 700px;
+  margin-top: 100px;
+}
+
+.box button {
+  background-color: var(--second-color);
+  color: var(--background);
+  border: 1px solid var(--second-color);
+  border-radius: 7.5px;
+  padding: 10px 20px;
+  font-size: 24px;
+  position: relative;
+  bottom: 60px;
+  transition: all ease-in-out .3s;
+  font-family: var(--first-font);
+  font-weight: 600;
+}
+
+.box button:hover {
+  cursor: pointer;
+  background-color: var(--second-color);
+  color: var(--background);
+  opacity: .85;
+}
+
+
+
