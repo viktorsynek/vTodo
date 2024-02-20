@@ -1,6 +1,7 @@
 import './css/main.css';
 import PageNotFound from './components/404';
 import Login from './components/Login';
+import Todos from './components/Todos';
 import Register from './components/Register';
 import ForgotPassword from './components/Password';
 import {Route, Routes, useNavigate} from 'react-router-dom';
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/pw" element={<ForgotPassword />} />
+          <Route path="/todos" element={<Todos />} />
       </Routes>
     </>
   );
