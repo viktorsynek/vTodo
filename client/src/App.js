@@ -1,24 +1,31 @@
-import { Link } from 'react-router-dom'
 import './css/main.css';
+import PageNotFound from './components/404';
+import Login from './components/Login';
+import Register from './components/Register';
+import ForgotPassword from './components/Password';
+import {Route, Routes, useNavigate} from 'react-router-dom';
+import React from 'react';
+
+function RedirectToRegister() {
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    navigate('/register');
+  }, [navigate]);
+
+  return null;
+}
 
 function App() {
   return (
     <>
-        <div className="topnav">
-          <div className="flex">
-            <ul className='topnav-items'>
-              <li><Link to="/" id='title'>vTodo</Link></li>
-            </ul>
-            <ul className='topnav-items'>
-              <li><Link to="/">username</Link></li>
-              <li><Link to="/">Logout</Link></li>
-            </ul>
-          </div>
-        </div>
-        <div className='box'>
-          <button>Add Task</button>
-
-        </div>
+      <Routes>
+          <Route path="/" element={<RedirectToRegister/>}></Route>
+          <Route path="*" element={<PageNotFound />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/pw" element={<ForgotPassword />} />
+      </Routes>
     </>
   );
 }
