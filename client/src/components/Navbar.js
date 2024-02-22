@@ -8,9 +8,13 @@ const Navbar = () => {
             <ul className='topnav-items'>
                 <li><Link to="/" id='title'>vTodo</Link></li>
             </ul>
-            <ul className='topnav-items'>
+            {/* <ul className='topnav-items'>
                 <li><Link to="/login">Login</Link></li>
                 <li><Link to="/register">Signup</Link></li>
+            </ul> */}
+            <ul className='topnav-items'>
+                <li><Link to="/login">username</Link></li>
+                <li><Link to="/register">Logout</Link></li>
             </ul>
         </div>
     </div>
