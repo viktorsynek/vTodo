@@ -154,6 +154,26 @@ a:hover{
   opacity: .85;
 }
 
+.box #search {
+  position: relative;
+  bottom: 78px;
+  left: 380px;
+  font-family: var(--third-font);
+  font-size: 22px;
+}
+
+.box #search-btn {
+  position: relative;
+  bottom: 75px;
+  left: 390px;
+  padding: 7.5px;
+}
+
+.box .search-box svg {
+  width: 40px;
+  height: 30px;
+  font-size: 32px;
+}
 
 .todos .todo {
   background-color: var(--background);
@@ -197,7 +217,7 @@ a:hover{
   opacity: .8;
 }
 
-.todos button {
+.box button {
   background-color: #ebebeb;
   border: .25px solid #ebebeb;
   color: #575757;
@@ -207,18 +227,17 @@ a:hover{
   transition: all ease-in-out .3s;
 }
 
-.todos button:hover {
+.box button:hover {
   cursor: pointer;
   opacity: .7;
-  padding: 7px;
 }
 
-.todos svg {
+.box svg {
   width: 25px;
   font-size: 24px;
 }
 
-.todos svg path {
+.box svg path {
   width: 23px;
 }
 
