@@ -1,7 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
-const todos = require('./routes/todo');
+const todos = require('./routes/auth');
+const auth = require('./routes/todo');
 const logger = require('./middleware/logger');
 const connectDB = require('./config/db');
 
@@ -12,6 +13,7 @@ connectDB();
 const app = express();
 
 app.use('/api/todos', todos);
+app.use('/api/auth/', auth);
 app.use(logger);
 
 const PORT = process.env.PORT;
