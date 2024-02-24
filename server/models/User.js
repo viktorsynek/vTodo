@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -28,6 +29,26 @@ const UserSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    }
+});
+
+
+UserSchema.pre('save', async function (next) {
+    try {
+        if (!this.isModified('password')) {
+            return next();
+        }
+        
+        const salt = await bcrypt.genSalt(10);
+        
+        if (!this.password) {
+            throw new Error("Password is missing");
+        }
+
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (error) {
+        next(error);
     }
 });
 
