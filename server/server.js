@@ -6,6 +6,7 @@ const auth = require('./routes/auth');
 const logger = require('./middleware/logger');
 const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 dotenv.config({path: './config/config.env'});
 
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/api/todos', todos);
+app.use(cookieParser());
 app.use('/api/auth', auth);
 app.use(logger);
 
