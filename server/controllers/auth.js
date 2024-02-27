@@ -44,6 +44,12 @@ exports.login = async(req,res,next) => {
     }
 };
 
+exports.getMe = async (req,res,next) => {
+    const user = await User.findById(req.user.id);
+    
+    res.status(200).json({success: true, data:user});
+};
+
 const sendTokenResponse = (user, statusCode, res) => {
     const token = user.getSignedJwtToken();
 
@@ -54,9 +60,13 @@ const sendTokenResponse = (user, statusCode, res) => {
     res.status(statusCode).cookie('token', token, options).json({ success: true, token}); 
 };
 
+exports.forgotPassword = async(req,res,next) => {
+    const user = await User.findOne({ email: req.body.email });
+    if(!user){
+        return next(new ErrorResponse('There is no user with that email', 404));
+    }
 
-exports.getMe = async (req,res,next) => {
-    const user = await User.findById(req.user.id);
+    const resetToken = user.getResetPasswordToken();
 
     res.status(200).json({success: true, data:user});
 };
