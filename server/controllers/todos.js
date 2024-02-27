@@ -30,6 +30,7 @@ exports.getTodo = async (req,res,next) => {
 }
 
 exports.createTodo = async (req,res,next) => {
+    req.body.user = req.user.id;
     try {
         const Todo = await Todo.create(req.body);
 
