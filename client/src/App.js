@@ -11,7 +11,7 @@ function RedirectToRegister() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    navigate('/register');
+    navigate('/login');
   }, [navigate]);
 
   return null;
