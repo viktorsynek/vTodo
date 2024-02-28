@@ -1,18 +1,32 @@
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
+
 
 
 const Todos = () => {
-return ( 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsLoggedIn(true);
+        } else {
+            window.location.href = '/login';
+        }
+    }, []);
+
+    if (!isLoggedIn) {
+        return null;
+    }
+
+    return ( 
     <>
         <Navbar></Navbar>
         <div className='box'>
             <div className='search-box'>
                 <button id='add'>Add Task</button>
-                <input id='search' type="text" placeholder='Search by title . . .'/><button id='search-btn'><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
             </div>
             <div className='todos'>
                 <div className="todo todo1">
