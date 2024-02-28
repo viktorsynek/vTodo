@@ -1,6 +1,39 @@
 import {Link} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+    const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [username, setUsername] = useState("");
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsLoggedIn(true);
+        }
+    }, [navigate]);
+
+    useEffect(() => {
+    const fetchUserData = async () => {
+        if (!isLoggedIn) return;
+        const response = await fetch("http://localhost:5000/api/auth/me", {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        });
+        const data = await response.json();
+        setUsername(data.data.username);
+    };
+    fetchUserData();
+    }, [isLoggedIn]);
+
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        navigate('/login');
+    };
+
     return ( 
     <>
     <div className="topnav">
@@ -8,13 +41,19 @@ const Navbar = () => {
             <ul className='topnav-items'>
                 <li><Link to="/" id='title'>vTodo</Link></li>
             </ul>
-            {/* <ul className='topnav-items'>
-                <li><Link to="/login">Login</Link></li>
-                <li><Link to="/register">Signup</Link></li>
-            </ul> */}
             <ul className='topnav-items'>
-                <li><Link to="/login">username</Link></li>
-                <li><Link to="/register">Logout</Link></li>
+
+            {isLoggedIn ? (
+                <>
+                    <li>{username}</li>
+                    <li><button onClick={handleLogout}>Logout</button></li>
+                </>
+            ) : (
+                <>
+                    <li><Link to="/login">Login</Link></li>
+                    <li><Link to="/register">Register</Link></li>
+                </>
+            )}
             </ul>
         </div>
     </div>
