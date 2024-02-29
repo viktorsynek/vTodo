@@ -112,6 +112,4 @@ exports.forgotPassword = async(req,res,next) => {
 
         return next(new ErrorResponse('Email could not be sent', 500));
     }
-
-    res.status(200).json({success: true, data:user});
 };
