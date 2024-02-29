@@ -1,10 +1,31 @@
 import Navbar from './Navbar'
 
 const ForgotPassword = () => {
+
+    const forgotPassword = async (e) => {
+        e.preventDefault();
+        const response = await fetch('http://localhost:5000/api/auth/forgotpassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: document.querySelector('input[type="email"]').value,
+            })
+        });
+
+        const data = await response.json();
+        if(data.success){
+            alert('Check your email for a reset link');
+        } else {
+            alert('Email not found');
+        }
+    }
+
     return (
         <>
             <Navbar />
-            <div className="password">
+            <div onSubmit={forgotPassword} className="password">
                 <h1>Forgot Password</h1>
                 <h4>
                     Enter your email, and you will get a mail with a link in it.
