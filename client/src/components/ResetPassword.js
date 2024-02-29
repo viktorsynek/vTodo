@@ -1,8 +1,8 @@
 import Navbar from './Navbar'
 
-const ForgotPassword = () => {
+const ResetPassword = () => {
 
-    const forgotPassword = async (e) => {
+    const resetPassword = async (e) => {
         e.preventDefault();
         const response = await fetch('http://localhost:5000/api/auth/resetpassword', {
             method: 'PUT',
@@ -25,14 +25,14 @@ const ForgotPassword = () => {
     return (
         <>
             <Navbar />
-            <div onSubmit={forgotPassword} className="password">
+            <div onSubmit={resetPassword} className="password">
                 <h1>Reset Password</h1>
                 <div className="container">
                 <form action="" method="post">
                     <div className="txt_field">
-                        <p>New Password</p>
+                        <p id='np'>New Password</p>
                         <input type="password" placeholder=''required/>
-                        <p>Confirm Password</p>
+                        <p id='cp'>Confirm Password</p>
                         <input type="password" placeholder=''required/>
                     </div>
                     <div>
@@ -45,4 +45,4 @@ const ForgotPassword = () => {
     );
 }
  
-export default ForgotPassword;
+export default ResetPassword;
