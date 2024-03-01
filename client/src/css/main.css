@@ -257,7 +257,7 @@ a:hover{
   width: 23px;
 }
 
-.error-box {
+.error-box, .sucess-box {
   display: inline-block;
   position: absolute;
   top: 10%;
@@ -275,7 +275,12 @@ a:hover{
   font-family: var(--fourth-font);
 }
 
-.error-box p {
+.sucess-box {
+  background-color: #6bf7aa;
+  border: 2px solid #1bf57d;
+}
+
+.error-box p, .sucess-box p{
   margin: 0;
   padding: 10px;
 }
