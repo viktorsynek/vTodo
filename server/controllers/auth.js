@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const ErrorResponse = require('../utils/errorResponse');
 const sendEmail = require('../utils/sendEmail');
+const crypto = require('crypto');
 
 exports.register = async(req,res,next) => {
     try {
@@ -62,7 +63,7 @@ exports.getMe = async (req,res,next) => {
 };
 
 exports.resetPassword = async(req,res,next) => {
-    const resetPasswordToken = crypto.createHash('sha256').update(req.params.resetToken).digest('hex');
+    const resetPasswordToken = crypto.createHash('sha256').update(req.body.token).digest('hex');
 
     const user = await User.findOne({
         resetPasswordToken,
@@ -70,7 +71,7 @@ exports.resetPassword = async(req,res,next) => {
     });
 
     if(!user){
-        return next(new ErrorResponse('Invalid token', 400));
+        return res.status(404).json({success: false, message:'Invalid token'})
     }
 
     user.password = req.body.password;
@@ -79,7 +80,6 @@ exports.resetPassword = async(req,res,next) => {
     await user.save();
 
     sendTokenResponse(user, 200, res);
-
 }
 
 const sendTokenResponse = (user, statusCode, res) => {
@@ -95,22 +95,19 @@ const sendTokenResponse = (user, statusCode, res) => {
 exports.forgotPassword = async(req,res,next) => {
     const user = await User.findOne({ email: req.body.email });
     if(!user){
-        return next(new ErrorResponse('There is no user with that email', 404));
+        return res.status(404).json({success: false, message:'There is no user with that email'})
     }
 
     const resetToken = user.getResetPasswordToken();
 
     await user.save({ validateBeforeSave: false });
 
-    const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/resetpassword/${resetToken}`;
-
-    const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
-
+    const resetUrl = `${req.protocol}:/localhost:3000/resetpassword?token=${resetToken}`;
     try {
         await sendEmail({
             email: user.email,
             subject: 'Password reset token',
-            message
+            resetUrl
         });
 
         res.status(200).json({success: true, data:'Email sent'});
@@ -119,7 +116,6 @@ exports.forgotPassword = async(req,res,next) => {
         user.resetPasswordExpiration = undefined;
 
         await user.save({ validateBeforeSave: false });
-
-        return next(new ErrorResponse('Email could not be sent', 500));
+        return res.status(500).json({success: false, message:'Email could not be sent'})
     }
 };
