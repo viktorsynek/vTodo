@@ -6,6 +6,16 @@ exports.register = async(req,res,next) => {
     try {
         const { username, email, password } = req.body;
 
+        const existingUsername = await User.findOne({ username });
+        if (existingUsername) {
+            return res.status(400).json({ success: false, message: 'Username already in use' });
+        }
+
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+            return res.status(400).json({ success: false, message: 'Email already in use' });
+        }
+
         const user = await User.create({
             username,
             email,
@@ -23,19 +33,19 @@ exports.login = async(req,res,next) => {
         const { username, password } = req.body;
 
         if(!username || !password){
-            return next(new ErrorResponse('Please provide an email and password', 400));
+            return res.status(401).json({success: false, message: "Please provide a username and password"});
         }
 
         const user = await User.findOne({ username }).select("+password");
 
         if(!user) {
-            return next(new ErrorResponse('Invalid credentials', 401));
+            return res.status(401).json({success: false, message: "Invalid credentials"});
         }
 
         const isMatch = await user.matchPassword(password);
 
         if(!isMatch){
-            return next(new ErrorResponse('Invalid credentials', 401));
+            return res.status(401).json({success: false, message: "Invalid credentials"});
         }
 
         sendTokenResponse(user, 200, res)
