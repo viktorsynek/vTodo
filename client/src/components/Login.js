@@ -6,6 +6,7 @@ import ErrorMessage from './ErrorMessage';
 
 const Login = () => {
     const [errorMsg, setErrorMsg] = useState('');
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -14,6 +15,7 @@ const Login = () => {
     }, []);
 
     async function loginUser(e) {
+        setErrorMsg('');
         e.preventDefault();
         const username = e.target.querySelector('input[type="text"]').value;
         const password = e.target.querySelector('input[type="password"]').value;
@@ -50,7 +52,7 @@ const Login = () => {
             <br />
             <input type="submit" value="Login" />
             <br />
-            <Link to="/pw">Forgot Password?</Link>
+            <Link to="/forgotpassword">Forgot Password?</Link>
         </form>
     </>
 );
