@@ -1,6 +1,8 @@
 import {Link} from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCode } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -45,7 +47,16 @@ const Navbar = () => {
 
             {isLoggedIn ? (
                 <>
-                    <li>{username}</li>
+                    <li style={{ color: '#6466f8' }}>
+                    {username === 'viktorsynek' ? (
+                        <>
+                        <FontAwesomeIcon icon={faCode} style={{ margin: 0, marginRight: '15px' }} />
+                        {username}
+                        </>
+                    ) : (
+                        username
+                    )}
+                    </li>
                     <li><button onClick={handleLogout}>Logout</button></li>
                 </>
             ) : (
