@@ -2,19 +2,41 @@ const nodemailer = require('nodemailer');
 
 const sendEmail = async options => {
     const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT,
+        service: 'gmail',
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
         auth:{
-            user: process.env.SMTP_EMAIL,
-            pass: process.env.SMTP_PASSWORD
+            user: process.env.USER,
+            pass: process.env.APP_PASSWORD,
         }
     });
 
     const message = {
-        from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
+        from: `vTodo <${process.env.USER}>`,
         to: options.email,
         subject: options.subject,
-        text: options.message
+        html: `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <style>      
+                a {
+                    text-decoration: none;
+                    transition: all ease-in-out 0.3s;
+                }
+                a:hover {
+                    opacity: 0.8;
+                    text-decoration: underline;
+                }
+            </style>
+        </head>
+        <body style="body{text-align:center; font-family: monospace;}">
+            <h1>vTodo - Reset Password</h1>
+            <p>Click the link below to reset your password</p>
+            <a style="color: #6466f8;" href="${options.resetUrl}">${options.resetUrl}</a>
+        </body>
+        </html>`,
     }
 
     const info = await transporter.sendMail(message);
