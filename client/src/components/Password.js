@@ -1,9 +1,21 @@
 import Navbar from './Navbar'
+import ErrorMessage from './ErrorMessage';
+import SucessMessage from './SucessMessage';
+import React, { useState } from 'react';
 
 const ForgotPassword = () => {
+    const [errorMsg, setErrorMsg] = useState('');
+    const [sucessMsg, setSucessMsg] = useState('');
 
     const forgotPassword = async (e) => {
         e.preventDefault();
+        setErrorMsg('');
+        setSucessMsg('');
+        const email = e.target.querySelector('input[type="email"]').value;
+        if (!email) {
+            setErrorMsg('Please provide an email');
+            return;
+        }
         const response = await fetch('http://localhost:5000/api/auth/forgotpassword', {
             method: 'POST',
             headers: {
@@ -16,15 +28,17 @@ const ForgotPassword = () => {
 
         const data = await response.json();
         if(data.success){
-            alert('Check your email for a reset link');
+            setSucessMsg('Check your email for a reset link. Also check your spam folder');
         } else {
-            alert('Email not found');
+            setErrorMsg(data.message);
         }
     }
 
     return (
         <>
             <Navbar />
+            {errorMsg && <ErrorMessage errorMsg={errorMsg} />}
+            {sucessMsg && <SucessMessage sucessMsg={sucessMsg} />}
             <div onSubmit={forgotPassword} className="password">
                 <h1>Forgot Password</h1>
                 <h4>
