@@ -257,5 +257,25 @@ a:hover{
   width: 23px;
 }
 
+.error-box {
+  display: inline-block;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%);
+  background-color: #fc6161;
+  border: 2px solid #fd2929;
+  color: var(--background);
+  border-radius: 10px;
+  text-align: center;
+  font-size: 18px;
+  padding-left: 10px;
+  max-width: 1050px;
+  padding-right: 10px;
+  font-family: var(--fourth-font);
+}
 
-
+.error-box p {
+  margin: 0;
+  padding: 10px;
+}
