@@ -138,123 +138,14 @@ a:hover{
   padding: 20px 30px;
 }
 
-.box {
-  margin: 0 auto;
-  background-color: #ecedf6;
-  border: 1px solid #ecedf6;
-  border-radius: 10px;
-  width: 850px;
-  margin-top: 100px;
-  padding: 20px;
+.sucess-box {
+  background-color: #6bf7aa;
+  border: 2px solid #1bf57d;
 }
 
-.box #add {
-  background-color: var(--second-color);
-  color: var(--background);
-  border: 1px solid var(--second-color);
-  border-radius: 7.5px;
-  padding: 10px 25px;
-  font-size: 20px;
-  position: relative;
-  bottom: 80px;
-  right: 20px;
-  transition: all ease-in-out .3s;
-  font-family: var(--first-font);
-  font-weight: 600;
-}
-
-.box #add:hover {
-  cursor: pointer;
-  background-color: var(--second-color);
-  color: var(--background);
-  opacity: .85;
-}
-
-.box #search {
-  position: relative;
-  bottom: 78px;
-  left: 380px;
-  font-family: var(--third-font);
-  font-size: 22px;
-}
-
-.box #search-btn {
-  position: relative;
-  bottom: 75px;
-  left: 390px;
-  padding: 7.5px;
-}
-
-.box .search-box svg {
-  width: 40px;
-  height: 30px;
-  font-size: 32px;
-}
-
-.todos .todo {
-  background-color: var(--background);
-  border: 1px solid var(--background);
-  border-radius: 10px;
-  width: 100%;
-  height: 100px;
-  margin-top: 25px;
-  display: flex;
-  align-items: center;
-}
-
-.todos .todo1 {
-  margin-top: -50px;
-}
-
-.todo .left {
-  flex-grow: 1;
-}
-
-.todo input[type="checkbox"] {
-  width: 35px;
-  height: 35px;
-  padding: 0;
+.error-box p, .sucess-box p{
   margin: 0;
-  border: 2px solid #555;
-  background-color: #fff;
-  margin-left: 15px;
-  margin-right: 25px;
-}
-
-.todo div h3 {
-  margin: 0;
-  margin-top: -10px;
-  font-size: 24px;
-}
-
-.todo div p {
-  margin: 0;
-  font-size: 20px;
-  opacity: .8;
-}
-
-.box button {
-  background-color: #ebebeb;
-  border: .25px solid #ebebeb;
-  color: #575757;
-  border-radius: 5px;
-  padding: 5px;
-  margin-right: 15px;
-  transition: all ease-in-out .3s;
-}
-
-.box button:hover {
-  cursor: pointer;
-  opacity: .7;
-}
-
-.box svg {
-  width: 25px;
-  font-size: 24px;
-}
-
-.box svg path {
-  width: 23px;
+  padding: 10px;
 }
 
 .error-box, .sucess-box {
@@ -273,14 +164,4 @@ a:hover{
   max-width: 1050px;
   padding-right: 10px;
   font-family: var(--fourth-font);
-}
-
-.sucess-box {
-  background-color: #6bf7aa;
-  border: 2px solid #1bf57d;
-}
-
-.error-box p, .sucess-box p{
-  margin: 0;
-  padding: 10px;
 }
