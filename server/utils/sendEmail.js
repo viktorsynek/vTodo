@@ -1,22 +1,22 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
-const sendEmail = async options => {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        auth:{
-            user: process.env.USER,
-            pass: process.env.APP_PASSWORD,
-        }
-    });
+const sendEmail = async (options) => {
+	const transporter = nodemailer.createTransport({
+		service: "gmail",
+		host: "smtp.gmail.com",
+		port: 587,
+		secure: false,
+		auth: {
+			user: process.env.USER,
+			pass: process.env.APP_PASSWORD,
+		},
+	});
 
-    const message = {
-        from: `vTodo <${process.env.USER}>`,
-        to: options.email,
-        subject: options.subject,
-        html: `<!DOCTYPE html>
+	const message = {
+		from: `vTodo <${process.env.USER}>`,
+		to: options.email,
+		subject: options.subject,
+		html: `<!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
@@ -37,11 +37,11 @@ const sendEmail = async options => {
             <a style="color: #6466f8;" href="${options.resetUrl}">${options.resetUrl}</a>
         </body>
         </html>`,
-    }
+	};
 
-    const info = await transporter.sendMail(message);
+	const info = await transporter.sendMail(message);
 
-    console.log('Message sent: %s', info.messageId);
-}
+	console.log("Message sent: %s", info.messageId);
+};
 
 module.exports = sendEmail;
