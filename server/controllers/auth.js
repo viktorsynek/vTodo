@@ -7,6 +7,14 @@ exports.register = async(req,res,next) => {
     try {
         const { username, email, password } = req.body;
 
+        if(username === '' || email === '' || password === ''){
+            return res.status(400).json({success: false, message: 'Please fill in all fields'});
+        }
+
+        if(username.length < 3 || password.length < 6){
+            return res.status(400).json({success: false, message: 'Username must be at least 3 characters and password must be at least 6 characters'});
+        }
+
         const existingUsername = await User.findOne({ username });
         if (existingUsername) {
             return res.status(400).json({ success: false, message: 'Username already in use' });
