@@ -3,9 +3,24 @@ import Navbar from "./Navbar";
 const CreateTodo = () => {
 	const createTodo = async (e) => {
 		e.preventDefault();
-		// const title = document.getElementById('title').value;
-		// const desc = document.getElementById('desc').value;
-		// const token = localStorage.getItem('token');
+		const title = document.getElementById("title").value;
+		const desc = document.getElementById("desc").value;
+		const response = await fetch("http://localhost:5000/api/todos", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				title,
+				desc,
+			}),
+		});
+		const data = await response.json();
+		if (data.success) {
+			window.location.href = "/todos";
+		} else {
+			console.log(data.message);
+		}
 	};
 
 	return (

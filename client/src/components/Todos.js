@@ -9,19 +9,33 @@ import {
 
 const Todos = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [todos, setTodos] = useState([]);
 
 	useEffect(() => {
 		const token = localStorage.getItem("token");
-		if (token) {
-			setIsLoggedIn(true);
-		} else {
+		if (!token) {
 			window.location.href = "/login";
+			return;
 		}
+		fetchTodos();
+		setIsLoggedIn(true);
 	}, []);
 
-	if (!isLoggedIn) {
-		return null;
-	}
+	const fetchTodos = async () => {
+		const response = await fetch("http://localhost:5000/api/todos/", {
+			method: "GET",
+			headers: {
+				Authorization: localStorage.getItem("token"),
+				"Content-Type": "application/json",
+			},
+		});
+		const data = await response.json();
+		console.log(data);
+		setTodos(data.data);
+		if (!data.sucess) {
+			console.log(data.message);
+		}
+	};
 
 	const searchTodo = async (e) => {
 		e.preventDefault();
@@ -53,23 +67,25 @@ const Todos = () => {
 					</button>
 				</div>
 				<div className="todos">
-					<div className="todo">
-						<div>
-							<input type="checkbox" name="check" />
+					{todos.map((todo) => (
+						<div key={todo._id} className="todo">
+							<div>
+								<input type="checkbox" name="check" />
+							</div>
+							<div className="left">
+								<h3>{todo.title}</h3>
+								<p>{new Date(todo.date).toLocaleString()}</p>
+							</div>
+							<div className="right">
+								<button>
+									<FontAwesomeIcon icon={faPen} />
+								</button>
+								<button>
+									<FontAwesomeIcon icon={faTrash} />
+								</button>
+							</div>
 						</div>
-						<div className="left">
-							<h3>Create a react project 🔥</h3>
-							<p>2024/02/20 5:23AM</p>
-						</div>
-						<div className="right">
-							<button>
-								<FontAwesomeIcon icon={faPen} />
-							</button>
-							<button>
-								<FontAwesomeIcon icon={faTrash} />
-							</button>
-						</div>
-					</div>
+					))}
 				</div>
 			</div>
 		</>
