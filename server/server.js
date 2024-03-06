@@ -7,13 +7,13 @@ const logger = require("./middleware/logger");
 const connectDB = require("./config/db");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-
+const cors = require("cors");
 dotenv.config({ path: "./config/config.env" });
 
 connectDB();
 
 const app = express();
-
+app.use(cors());
 app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 	res.setHeader(
@@ -28,8 +28,8 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use("/api/todos", todos);
 app.use(cookieParser());
+app.use("/api/todos", todos);
 app.use("/api/auth", auth);
 app.use(logger);
 
