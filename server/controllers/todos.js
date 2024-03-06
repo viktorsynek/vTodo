@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 exports.getTodos = async (req, res, next) => {
 	try {
 		const token = req.headers.authorization;
-		console.log(token);
 		if (!token) {
 			return res
 				.status(401)
