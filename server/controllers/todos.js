@@ -1,8 +1,20 @@
 const Todo = require("../models/Todo");
+const jwt = require("jsonwebtoken");
 
 exports.getTodos = async (req, res, next) => {
 	try {
-		const Todo = await Todo.find();
+		const token = req.headers.authorization;
+		console.log(token);
+		if (!token) {
+			return res
+				.status(401)
+				.json({ success: false, error: "Unauthorized: No token provided" });
+		}
+
+		const decoded = jwt.verify(token, process.env.JWT_SECRET);
+		const userId = decoded.id;
+
+		const Todo = await Todo.find({ user: userId });
 
 		res.status(200).json({
 			success: true,
@@ -30,13 +42,25 @@ exports.getTodo = async (req, res, next) => {
 };
 
 exports.createTodo = async (req, res, next) => {
-	req.body.user = req.user.id;
 	try {
-		const Todo = await Todo.create(req.body);
+		const token = req.headers.authorization;
+
+		if (!token) {
+			return res
+				.status(401)
+				.json({ success: false, error: "Unauthorized: No token provided" });
+		}
+
+		const decoded = jwt.verify(token, process.env.JWT_SECRET);
+		const userId = decoded.id;
+
+		req.body.user = userId;
+
+		const todo = await Todo.create(req.body);
 
 		res.status(201).json({
 			success: true,
-			data: Todo,
+			data: todo,
 		});
 	} catch (error) {
 		res.status(400).json({ sucess: false });
