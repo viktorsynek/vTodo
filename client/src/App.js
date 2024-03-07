@@ -9,6 +9,8 @@ import ResetPassword from "./components/ResetPassword";
 import CreateTodo from "./components/CreateTodo";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import React from "react";
+import UpdateTodo from "./components/UpdateTodo";
+import CheckTodo from "./components/CheckTodo";
 
 function RedirectToRegister() {
 	const navigate = useNavigate();
@@ -31,6 +33,8 @@ function App() {
 				<Route path="/forgotpassword" element={<ForgotPassword />} />
 				<Route path="/resetpassword" element={<ResetPassword />} />
 				<Route path="/todos" element={<Todos />} />
+				<Route path="/todos/update/:todoId" element={<UpdateTodo />} />
+				<Route path="/todos/:todoId" element={<CheckTodo />} />
 				<Route path="/create-todo" element={<CreateTodo />} />
 			</Routes>
 		</>
