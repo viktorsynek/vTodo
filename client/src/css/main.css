@@ -167,3 +167,29 @@ a:hover {
 	padding-right: 10px;
 	font-family: var(--fourth-font);
 }
+
+@media screen and (max-width: 930px) {
+	.topnav-items li {
+		margin-right: 35px;
+		margin-left: 35px;
+	}
+	.topnav-items * {
+		font-size: 22px !important;
+	}
+	.box {
+		width: 80% !important;
+	}
+}
+
+@media screen and (max-width: 680px) {
+	.topnav-items li {
+		margin-right: 25px;
+		margin-left: 25px;
+	}
+	.topnav-items * {
+		font-size: 20px !important;
+	}
+	.reglog {
+		width: 450px !important;
+	}
+}
