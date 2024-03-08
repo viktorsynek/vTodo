@@ -4,84 +4,55 @@ const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 
 exports.register = async (req, res, next) => {
-	try {
-		const { username, email, password } = req.body;
+	const { username, email, password } = req.body;
 
-		if (username === "" || email === "" || password === "") {
-			return res
-				.status(400)
-				.json({ success: false, message: "Please fill in all fields" });
-		}
-
-		if (username.length < 3 || password.length < 6) {
-			return res
-				.status(400)
-				.json({
-					success: false,
-					message:
-						"Username must be at least 3 characters and password must be at least 6 characters",
-				});
-		}
-
-		const existingUsername = await User.findOne({ username });
-		if (existingUsername) {
-			return res
-				.status(400)
-				.json({ success: false, message: "Username already in use" });
-		}
-
-		const existingEmail = await User.findOne({ email });
-		if (existingEmail) {
-			return res
-				.status(400)
-				.json({ success: false, message: "Email already in use" });
-		}
-
-		const user = await User.create({
-			username,
-			email,
-			password,
-		});
-
-		sendTokenResponse(user, 200, res);
-	} catch (error) {
-		res.status(400).json({ success: false, message: error });
+	if (username === "" || email === "" || password === "") {
+		return next(new ErrorResponse("Please fill in all fields", 400));
 	}
+
+	if (username.length < 3) {
+		return next(new ErrorResponse("Username must be at least 3 characters long", 400));
+	}
+
+	if (password.length < 6) {
+		return next(new ErrorResponse("Password must be at least 6 characters long", 400));
+	}
+
+	const existingUsername = await User.findOne({ username });
+	if (existingUsername != null) {
+		return next(new ErrorResponse("Username already in use", 400));
+	}
+
+	const existingEmail = await User.findOne({ email });
+	if (existingEmail != null) {
+		return next(new ErrorResponse("Email already in use", 400));
+	}
+
+	const user = await User.create({
+		username,
+		email,
+		password,
+	});
+	sendTokenResponse(user, 200, res);
 };
 
 exports.login = async (req, res, next) => {
-	try {
-		const { username, password } = req.body;
-
-		if (!username || !password) {
-			return res
-				.status(401)
-				.json({
-					success: false,
-					message: "Please provide a username and password",
-				});
-		}
-
-		const user = await User.findOne({ username }).select("+password");
-
-		if (!user) {
-			return res
-				.status(401)
-				.json({ success: false, message: "Invalid credentials" });
-		}
-
-		const isMatch = await user.matchPassword(password);
-
-		if (!isMatch) {
-			return res
-				.status(401)
-				.json({ success: false, message: "Invalid credentials" });
-		}
-
-		sendTokenResponse(user, 200, res);
-	} catch (error) {
-		res.status(400).json({ success: false, message: error });
+	const { username, password } = req.body;
+	if (!username || !password) {
+		return next(new ErrorResponse("Please provide a username and password", 401));
 	}
+
+	const user = await User.findOne({ username }).select("+password");
+	if (!user) {
+		return next(new ErrorResponse("Invalid credentials", 401));
+	}
+
+	const isMatch = await user.matchPassword(password);
+	if (!isMatch) {
+		return next(new ErrorResponse("Invalid credentials", 401));
+	}
+
+	sendTokenResponse(user, 200, res);
 };
 
 exports.getMe = async (req, res, next) => {
@@ -100,9 +71,8 @@ exports.resetPassword = async (req, res, next) => {
 		resetPasswordToken,
 		resetPasswordExpiration: { $gt: Date.now() },
 	});
-
 	if (!user) {
-		return res.status(404).json({ success: false, message: "Invalid token" });
+		return next(new ErrorResponse("Invalid token", 401));
 	}
 
 	user.password = req.body.password;
@@ -115,7 +85,6 @@ exports.resetPassword = async (req, res, next) => {
 
 const sendTokenResponse = (user, statusCode, res) => {
 	const token = user.getSignedJwtToken();
-
 	const options = {
 		httpOnly: true,
 	};
@@ -129,13 +98,10 @@ const sendTokenResponse = (user, statusCode, res) => {
 exports.forgotPassword = async (req, res, next) => {
 	const user = await User.findOne({ email: req.body.email });
 	if (!user) {
-		return res
-			.status(404)
-			.json({ success: false, message: "There is no user with that email" });
+		return next(new ErrorResponse("There is no user with that email", 401));
 	}
 
 	const resetToken = user.getResetPasswordToken();
-
 	await user.save({ validateBeforeSave: false });
 
 	const resetUrl = `${req.protocol}:/localhost:3000/resetpassword?token=${resetToken}`;
@@ -152,8 +118,6 @@ exports.forgotPassword = async (req, res, next) => {
 		user.resetPasswordExpiration = undefined;
 
 		await user.save({ validateBeforeSave: false });
-		return res
-			.status(500)
-			.json({ success: false, message: "Email could not be sent" });
+		return next(new ErrorResponse("Email could not be sent", 500));
 	}
 };

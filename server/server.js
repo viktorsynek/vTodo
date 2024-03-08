@@ -1,19 +1,26 @@
+require("dotenv").config({ path: "./config/config.env" });
+require("colors");
+
 const express = require("express");
-const dotenv = require("dotenv");
-const colors = require("colors");
 const todos = require("./routes/todo");
 const auth = require("./routes/auth");
 const logger = require("./middleware/logger");
+const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-dotenv.config({ path: "./config/config.env" });
+
+const app = express();
+const PORT = process.env.PORT;
 
 connectDB();
 
-const app = express();
 app.use(cors());
+app.use(logger);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
 app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 	res.setHeader(
@@ -24,16 +31,9 @@ app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Credentials", "true");
 	next();
 });
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-app.use(cookieParser());
 app.use("/api/todos", todos);
 app.use("/api/auth", auth);
-app.use(logger);
-
-const PORT = process.env.PORT;
+app.use(errorHandler);
 
 app.listen(PORT, () => {
 	console.log(
