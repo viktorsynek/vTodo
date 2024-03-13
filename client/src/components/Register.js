@@ -41,11 +41,12 @@ const Register = () => {
 		});
 
 		const data = await response.json();
+		console.log(data);
 		if (data.token) {
 			window.location.href = "/login";
 			setErrorMsg("");
 		} else {
-			setErrorMsg(data.message);
+			setErrorMsg(data.error);
 		}
 	}
 

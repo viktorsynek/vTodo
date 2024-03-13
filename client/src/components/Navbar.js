@@ -20,7 +20,7 @@ const Navbar = () => {
 			if (!isLoggedIn) return;
 			const response = await fetch("http://localhost:5000/api/auth/me", {
 				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Authorization: localStorage.getItem("token"),
 				},
 			});
 			const data = await response.json();
