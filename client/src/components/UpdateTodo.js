@@ -5,7 +5,7 @@ import { useParams, Link } from "react-router-dom";
 
 const UpdateTodo = () => {
 	const { todoId } = useParams();
-
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [errorMsg, setErrorMsg] = useState("");
 	const [todoData, setTodoData] = useState({
 		title: "",
@@ -13,34 +13,40 @@ const UpdateTodo = () => {
 	});
 
 	useEffect(() => {
-		const fetchTodoDetails = async () => {
-			try {
-				const response = await fetch(
-					`http://localhost:5000/api/todos/${todoId}`,
-					{
-						method: "GET",
-						headers: {
-							Authorization: localStorage.getItem("token"),
-							"Content-Type": "application/json",
-						},
-					}
-				);
-				const data = await response.json();
-				if (response.ok) {
-					setTodoData({
-						title: data.data.title,
-						description: data.data.description,
-					});
-				} else {
-					setErrorMsg(data.message);
-				}
-			} catch (error) {
-				console.error("Error fetching todo details:", error);
-			}
-		};
-
+		const token = localStorage.getItem("token");
+		if (!token) {
+			window.location.href = "/login";
+			return;
+		}
 		fetchTodoDetails();
-	}, [todoId]);
+		setIsLoggedIn(true);
+	}, [isLoggedIn, todoId]);
+
+	const fetchTodoDetails = async () => {
+		try {
+			const response = await fetch(
+				`http://localhost:5000/api/todos/${todoId}`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: localStorage.getItem("token"),
+						"Content-Type": "application/json",
+					},
+				}
+			);
+			const data = await response.json();
+			if (response.ok) {
+				setTodoData({
+					title: data.data.title,
+					description: data.data.description,
+				});
+			} else {
+				setErrorMsg(data.error);
+			}
+		} catch (error) {
+			console.error("Error fetching todo details:", error);
+		}
+	};
 
 	const updateTodo = async (e) => {
 		e.preventDefault();
@@ -55,10 +61,11 @@ const UpdateTodo = () => {
 			body: JSON.stringify({ title, description: desc }),
 		});
 		const data = await response.json();
+		console.log(data);
 		if (data.success) {
 			window.location.href = "/todos";
 		} else {
-			setErrorMsg(data.message);
+			setErrorMsg(data.error);
 		}
 	};
 
