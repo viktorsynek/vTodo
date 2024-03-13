@@ -19,10 +19,11 @@ const CreateTodo = () => {
 			body: JSON.stringify({ title, description: desc }),
 		});
 		const data = await response.json();
+		console.log(data);
 		if (data.success) {
 			window.location.href = "/todos";
 		} else {
-			setErrorMsg(data.message);
+			setErrorMsg(data.error);
 		}
 	};
 
