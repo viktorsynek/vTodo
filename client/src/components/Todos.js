@@ -28,7 +28,7 @@ const Todos = () => {
 		const data = await response.json();
 		setTodos(data.data);
 		if (!data.success) {
-			console.log(data.error);
+			console.log(data.message);
 		}
 	};
 
