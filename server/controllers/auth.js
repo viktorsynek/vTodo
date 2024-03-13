@@ -11,11 +11,15 @@ exports.register = async (req, res, next) => {
 	}
 
 	if (username.length < 3) {
-		return next(new ErrorResponse("Username must be at least 3 characters long", 400));
+		return next(
+			new ErrorResponse("Username must be at least 3 characters long", 400)
+		);
 	}
 
 	if (password.length < 6) {
-		return next(new ErrorResponse("Password must be at least 6 characters long", 400));
+		return next(
+			new ErrorResponse("Password must be at least 6 characters long", 400)
+		);
 	}
 
 	const existingUsername = await User.findOne({ username });
@@ -27,19 +31,24 @@ exports.register = async (req, res, next) => {
 	if (existingEmail != null) {
 		return next(new ErrorResponse("Email already in use", 400));
 	}
-
-	const user = await User.create({
-		username,
-		email,
-		password,
-	});
-	sendTokenResponse(user, 200, res);
+	try {
+		const user = await User.create({
+			username,
+			email,
+			password,
+		});
+		sendTokenResponse(user, 200, res);
+	} catch (error) {
+		return next(new ErrorResponse("Email is not correctly formatted", 400));
+	}
 };
 
 exports.login = async (req, res, next) => {
 	const { username, password } = req.body;
 	if (!username || !password) {
-		return next(new ErrorResponse("Please provide a username and password", 401));
+		return next(
+			new ErrorResponse("Please provide a username and password", 401)
+		);
 	}
 
 	const user = await User.findOne({ username }).select("+password");
