@@ -36,7 +36,7 @@ const Login = () => {
 			localStorage.setItem("token", data.token);
 			window.location.href = "/todos";
 		} else {
-			setErrorMsg(data.message);
+			setErrorMsg(data.error);
 		}
 	}
 
